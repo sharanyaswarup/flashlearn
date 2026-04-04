@@ -12,7 +12,7 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# ✅ NEW GENAI CLIENT (correct way)
+# ✅ GENAI CLIENT
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
 
@@ -20,13 +20,18 @@ def extract_text_from_pdf(file):
     reader = PyPDF2.PdfReader(file)
     text = ""
     for page in reader.pages:
-        text += page.extract_text() + "\n"
+        extracted = page.extract_text()
+        if extracted:
+            text += extracted + "\n"
     return text.strip()
 
 
 def parse_json_response(text):
-    clean = re.sub(r"```json|```", "", text).strip()
-    return json.loads(clean)
+    try:
+        clean = re.sub(r"```json|```", "", text).strip()
+        return json.loads(clean)
+    except Exception:
+        return None
 
 
 @app.route("/generate-flashcards", methods=["POST"])
@@ -51,16 +56,16 @@ Format: [{{"q": "question here", "a": "concise answer in 1-2 sentences"}}]
 Study Notes:
 {pdf_text[:8000]}"""
 
-        # ✅ NEW API CALL
+        # ✅ FIXED MODEL NAME
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="models/gemini-2.5-flash",
             contents=prompt
         )
 
         cards = parse_json_response(response.text)
 
-        if not isinstance(cards, list) or len(cards) == 0:
-            return jsonify({"error": "Failed to generate flashcards"}), 500
+        if not cards:
+            return jsonify({"error": "Failed to parse AI response", "raw": response.text}), 500
 
         return jsonify({"cards": cards})
 
@@ -89,13 +94,16 @@ Return ONLY a valid JSON array with no preamble, no markdown fences.
 Format: [{{"topic": "short topic title", "notes": "2-3 sentence explanation"}}]
 One entry per card in the list above."""
 
-        # ✅ NEW API CALL
+        # ✅ FIXED MODEL NAME
         response = client.models.generate_content(
-            model="gemini-2.0-flash",
+            model="models/gemini-2.5-flash",
             contents=prompt
         )
 
         notes = parse_json_response(response.text)
+
+        if not notes:
+            return jsonify({"error": "Failed to parse AI response", "raw": response.text}), 500
 
         return jsonify({"notes": notes})
 

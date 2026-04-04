@@ -1,147 +1,151 @@
 # FlashLearn 🎴
-**Smart AI-powered flashcard curator**
 
-Upload your PDF notes → AI generates flashcards → Swipe to learn → Revise only what you struggle with.
+**AI-powered flashcard generator from study notes**
 
----
-
-## Tech Stack
-- **Frontend**: React
-- **Backend**: Python Flask
-- **AI**: Google Gemini API (`gemini-1.5-flash`)
+Upload your PDF notes → AI generates flashcards → Swipe to learn → Revise only weak topics.
 
 ---
 
-## Project Structure
+## 🚀 Features
+
+* 📄 Upload PDF notes
+* 🤖 AI-generated flashcards (Q&A)
+* 👉 Swipe-based learning (know / don’t know)
+* 🔁 Revision mode (focus on weak areas only)
+* ⚡ Fast and interactive learning experience
+
+---
+
+## 🛠 Tech Stack
+
+* **Frontend**: React
+* **Backend**: Flask (Python 3.11)
+* **AI**: Google Gemini API (`models/gemini-2.5-flash`)
+* **PDF Parsing**: PyPDF2
+
+---
+
+## 📁 Project Structure
+
 ```
 flashlearn/
 ├── backend/
-│   ├── app.py              # Flask API
+│   ├── app.py
 │   ├── requirements.txt
 │   └── .env.example
 ├── frontend/
-│   ├── public/
-│   │   └── index.html
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── UploadScreen.js
-│   │   │   ├── LoadingScreen.js
-│   │   │   ├── ModeScreen.js
-│   │   │   ├── CardScreen.js
-│   │   │   └── RevisionScreen.js
-│   │   ├── App.js
-│   │   ├── App.css
-│   │   ├── index.js
-│   │   └── index.css
-│   └── package.json
+│   └── public/
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-## Setup Instructions
+## ⚙️ Setup Instructions
 
-### 1. Get a Gemini API Key
-1. Go to [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
-2. Click **Create API Key**
-3. Set up billing
+### 1️⃣ Get Gemini API Key
+
+1. Go to https://aistudio.google.com/app/apikey
+2. Create API key
+3. Ensure billing is enabled in Google Cloud
 4. Copy the key
+
 ---
 
-### 2. Backend Setup
+### 2️⃣ Backend Setup
 
 ```bash
 cd backend
 
-# Create virtual environment
-python -m venv venv
+# Create virtual environment (Python 3.11 recommended)
+py -3.11 -m venv venv
 
-# Activate it
-# Windows:
-venv\Scripts\activate
-# Mac/Linux:
-source venv/bin/activate
+# Activate
+venv\Scripts\activate   # Windows
+# source venv/bin/activate  # Mac/Linux
 
 # Install dependencies
 pip install -r requirements.txt
 
-# Create your .env file
-cp .env.example .env
-# Open .env and paste your Gemini API key
-
-pip uninstall google-generativeai -y
+# Install latest Gemini SDK
 pip install google-genai
 
+# Create .env file
+copy .env.example .env
 ```
 
-Your `backend/.env` should look like:
+Edit `.env`:
+
 ```
-GEMINI_API_KEY=AIzaSy...your_key_here
+GEMINI_API_KEY=your_api_key_here
 ```
 
-Start the backend:
+Run backend:
+
 ```bash
 python app.py
 ```
-Backend runs at `http://localhost:5000`
+
+Backend runs at: http://localhost:5000
 
 ---
 
-### 3. Frontend Setup
-
-Open a **new terminal**:
+### 3️⃣ Frontend Setup
 
 ```bash
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start the app
 npm start
 ```
 
-Frontend runs at `http://localhost:3000`  
-The `"proxy": "http://localhost:5000"` in `package.json` routes API calls automatically.
+Frontend runs at: http://localhost:3000
 
 ---
 
-### 4. Using the App
+## 🧠 How It Works
 
-1. Open `http://localhost:3000`
-2. Upload a PDF of your notes
-3. Wait ~10-20 seconds for AI to generate 10 flashcards
-4. **Curated Questions**: Go through all cards
-   - Tap card to reveal the answer
-   - Swipe **Right** (Yes) if you knew it
-   - Swipe **Left** (No) to mark for revision
-5. After finishing Deck 1, **Revision Mode** unlocks
-6. **Revision**: See AI-generated short notes for only the topics you struggled with
+1. Upload a PDF of your notes
+2. AI extracts key concepts and generates flashcards
+3. Go through cards:
+
+   * Tap to reveal answer
+   * Swipe right → you know it
+   * Swipe left → mark for revision
+4. After completion:
+
+   * Revision mode unlocks
+   * AI generates short notes for weak topics
 
 ---
 
-## GitHub Setup
+## 🔐 Environment Variables
 
-```bash
-# From the flashlearn/ root folder:
-git init
-git add .
-git commit -m "initial commit - FlashLearn app"
-
-# Create a repo on github.com, then:
-git remote add origin https://github.com/YOUR_USERNAME/flashlearn.git
-git branch -M main
-git push -u origin main
+```
+GEMINI_API_KEY=your_api_key
 ```
 
-> **Important**: Never commit your `.env` file. It's in `.gitignore` already.
+> ⚠️ Never commit your `.env` file
 
 ---
 
-## Running Both Servers (Quick Reference)
+## 📌 Notes
 
-| Terminal | Command | URL |
-|----------|---------|-----|
-| Terminal 1 | `cd backend && python app.py` | http://localhost:5000 |
-| Terminal 2 | `cd frontend && npm start` | http://localhost:3000 |
+* Requires Python **3.11+**
+* Uses latest Gemini API (google-genai SDK)
+* Model used: `models/gemini-2.5-flash`
+
+---
+
+## 🚀 Future Improvements
+
+* User authentication
+* Save decks
+* Spaced repetition algorithm
+* Mobile responsiveness
+
+---
+
+## 👨‍💻 Author
+
+Built as an AI-powered learning tool project.
