@@ -5,9 +5,9 @@
 ═══════════════════════════════════════════════════════════ */
 :root {
   /* Background palette — sky blue like screenshots */
-  --sky:        #c8dcf0;
-  --sky-dark:   #b5cde6;
-  --sky-light:  #ddeaf8;
+  --sky:        #A9C6FF;
+  --sky-dark:   #8fb5f5;
+  --sky-light:  #D1E9FD;
 
   /* Surfaces */
   --white:      #ffffff;
@@ -77,8 +77,8 @@ html, body { height: 100%; font-family: var(--f-body); color: var(--ink); }
 /* Decorative blobs */
 .bg-decoration { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
 .bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .18; }
-.bg-blob-1 { width: 680px; height: 680px; background: #90b8e8; top: -220px; right: -180px; }
-.bg-blob-2 { width: 480px; height: 480px; background: #a8ccf0; bottom: -160px; left: -140px; }
+.bg-blob-1 { width: 680px; height: 680px; background: #85aef0; top: -220px; right: -180px; }
+.bg-blob-2 { width: 480px; height: 480px; background: #A9C6FF; bottom: -160px; left: -140px; }
 .bg-blob-3 { width: 360px; height: 360px; background: #c4b0e8; top: 38%; left: 22%; }
 
 .screen { position: relative; z-index: 1; min-height: 100vh; width: 100%; display: flex; flex-direction: column; }
@@ -89,7 +89,7 @@ html, body { height: 100%; font-family: var(--f-body); color: var(--ink); }
 .top-nav {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 36px;
-  background: rgba(200,220,240,0.82);
+  background: rgba(169,198,255,0.82);
   backdrop-filter: blur(16px);
   border-bottom: 1.5px solid rgba(107,95,181,0.16);
   position: sticky; top: 0; z-index: 200; flex-shrink: 0;

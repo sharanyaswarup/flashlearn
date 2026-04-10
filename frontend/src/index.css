@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   margin: 0;
-  background: #c8dcf0;
+  background: #A9C6FF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
