@@ -1,151 +1,93 @@
-# FlashLearn 🎴
+# FlashLearn — Enhanced
 
-**AI-powered flashcard generator from study notes**
+AI-powered flashcard generator with authentication, smart revision, and progress tracking.
 
-Upload your PDF notes → AI generates flashcards → Swipe to learn → Revise only weak topics.
+## ✨ New Features (This Update)
 
----
+- 🎨 **Complete UI Overhaul** — Soft blue/purple/cream theme matching the original design mockups
+- 👆 **Swipe Gestures** — Swipe left/right on cards (touch + click) after answer is revealed
+- 🗑️ **Delete Sessions** — Remove past sessions from the dashboard
+- 👤 **User Profile** — View profile info and delete your account
+- 🔄 **CI/CD Pipeline** — GitHub Actions with automated tests, build, lint, and Docker deploy
 
-## 🚀 Features
+## Tech Stack
 
-* 📄 Upload PDF notes
-* 🤖 AI-generated flashcards (Q&A)
-* 👉 Swipe-based learning (know / don’t know)
-* 🔁 Revision mode (focus on weak areas only)
-* ⚡ Fast and interactive learning experience
+- **Frontend**: React 18, Nunito + Space Grotesk fonts
+- **Backend**: Flask, PyMongo, PyJWT, bcrypt, Google Gemini AI
+- **Database**: MongoDB
+- **CI/CD**: GitHub Actions + Docker
 
----
+## Quick Start
 
-## 🛠 Tech Stack
-
-* **Frontend**: React
-* **Backend**: Flask (Python 3.11)
-* **AI**: Google Gemini API (`models/gemini-2.5-flash`)
-* **PDF Parsing**: PyPDF2
-
----
-
-## 📁 Project Structure
-
-```
-flashlearn/
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-│   └── .env.example
-├── frontend/
-│   ├── src/
-│   └── public/
-├── .gitignore
-└── README.md
-```
-
----
-
-## ⚙️ Setup Instructions
-
-### 1️⃣ Get Gemini API Key
-
-1. Go to https://aistudio.google.com/app/apikey
-2. Create API key
-3. Ensure billing is enabled in Google Cloud
-4. Copy the key
-
----
-
-### 2️⃣ Backend Setup
+### 1. Backend
 
 ```bash
 cd backend
-
-# Create virtual environment (Python 3.11 recommended)
-py -3.11 -m venv venv
-
-# Activate
-venv\Scripts\activate   # Windows
-# source venv/bin/activate  # Mac/Linux
-
-# Install dependencies
+python -m venv venv
+source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-
-# Install latest Gemini SDK
-pip install google-genai
-
-# Create .env file
-copy .env.example .env
 ```
 
-Edit `.env`:
-
+Create `backend/.env`:
 ```
-GEMINI_API_KEY=your_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
+MONGODB_URI=mongodb://localhost:27017/
+JWT_SECRET=any_long_random_string_here
 ```
-
-Run backend:
 
 ```bash
 python app.py
+# Runs on http://localhost:5000
 ```
 
-Backend runs at: http://localhost:5000
-
----
-
-### 3️⃣ Frontend Setup
+### 2. Frontend
 
 ```bash
 cd frontend
 npm install
 npm start
+# Runs on http://localhost:3000
 ```
 
-Frontend runs at: http://localhost:3000
+### 3. Docker (all-in-one)
 
----
-
-## 🧠 How It Works
-
-1. Upload a PDF of your notes
-2. AI extracts key concepts and generates flashcards
-3. Go through cards:
-
-   * Tap to reveal answer
-   * Swipe right → you know it
-   * Swipe left → mark for revision
-4. After completion:
-
-   * Revision mode unlocks
-   * AI generates short notes for weak topics
-
----
-
-## 🔐 Environment Variables
-
-```
-GEMINI_API_KEY=your_api_key
+```bash
+cp .env.example .env   # set your keys
+docker-compose up --build
+# App at http://localhost:3000
 ```
 
-> ⚠️ Never commit your `.env` file
+## CI/CD Pipeline
 
----
+GitHub Actions workflows in `.github/workflows/`:
 
-## 📌 Notes
+| Workflow | Trigger | Jobs |
+|---|---|---|
+| `ci.yml` | Push to main/develop, PRs | Backend tests → Frontend build → Docker build → Deploy |
+| `pr-checks.yml` | Pull Requests | Lint frontend, Lint backend, Bundle size check |
 
-* Requires Python **3.11+**
-* Uses latest Gemini API (google-genai SDK)
-* Model used: `models/gemini-2.5-flash`
+### Setup for Deployment
 
----
+Add these GitHub repository secrets:
+- `DOCKER_USERNAME` — Docker Hub username
+- `DOCKER_PASSWORD` — Docker Hub access token
+- `GEMINI_API_KEY` — Your Gemini API key
+- `JWT_SECRET` — Strong random string for JWT signing
 
-## 🚀 Future Improvements
+### Environment Variables
 
-* User authentication
-* Save decks
-* Spaced repetition algorithm
-* Mobile responsiveness
+| Variable | Required | Description |
+|---|---|---|
+| `GEMINI_API_KEY` | ✅ | Google Gemini API key |
+| `MONGODB_URI` | ✅ | MongoDB connection string |
+| `JWT_SECRET` | ✅ | Secret for JWT tokens |
 
----
+## Getting a Gemini API Key
 
-## 👨‍💻 Author
+Free key at: https://aistudio.google.com/apikey
 
-Built as an AI-powered learning tool project.
+## MongoDB Options
+
+**Local:** Install MongoDB Community and start `mongod`  
+**Cloud (free):** https://mongodb.com/atlas — get a free M0 cluster
+

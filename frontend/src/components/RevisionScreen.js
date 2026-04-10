@@ -4,28 +4,33 @@ export default function RevisionScreen({ notes, onBack }) {
   const [idx, setIdx] = useState(0);
   const note = notes[idx];
   const isLast = idx === notes.length - 1;
+  const progress = ((idx + 1) / notes.length) * 100;
 
   return (
-    <div className="screen">
-      <button className="back-btn" onClick={onBack}>←</button>
-      <div className="logo faded">FlashLearn</div>
-      <div className="tagline" style={{ opacity: 0.5 }}>Smart flashcard curator</div>
-
-      <div className="card-wrap">
-        <div className="card-header centered">
-          <div className="progress-badge">{idx + 1}/{notes.length}</div>
-        </div>
-        <div className="rev-body">
-          <div className="rev-topic">{note?.topic}</div>
-          <div>{note?.notes}</div>
-        </div>
+    <div className="screen card-screen">
+      <div className="top-nav">
+        <div className="top-nav-brand"><span className="top-nav-logo">FL</span><span className="top-nav-name">FlashLearn</span></div>
+        <button className="nav-pill outline" onClick={onBack}>⬅ Back</button>
       </div>
-
-      <div className="rev-btns">
-        {!isLast && (
-          <button className="nf-btn" onClick={() => setIdx(i => i + 1)}>NEXT</button>
-        )}
-        <button className="nf-btn red" onClick={onBack}>FINISH</button>
+      <div className="card-screen-content">
+        <div className="card-progress-area">
+          <div className="card-progress-info">
+            <span className="card-progress-label">Revision {idx + 1} of {notes.length}</span>
+            <span className="card-progress-pct">{Math.round(progress)}%</span>
+          </div>
+          <div className="card-progress-bar"><div className="card-progress-fill revision-fill" style={{ width: `${progress}%` }} /></div>
+        </div>
+        <div className="revision-card-wrap">
+          <div className="revision-badge">📖 Revision Note</div>
+          <div className="revision-topic">{note?.topic}</div>
+          <div className="revision-notes">{note?.notes}</div>
+        </div>
+        <div className="nav-row">
+          {idx > 0 && <button className="nav-arrow-btn" onClick={() => setIdx(i => i - 1)}>← Prev</button>}
+          {!isLast
+            ? <button className="next-btn" onClick={() => setIdx(i => i + 1)}>Next →</button>
+            : <button className="next-btn finish-btn" onClick={onBack}>✓ Done</button>}
+        </div>
       </div>
     </div>
   );
