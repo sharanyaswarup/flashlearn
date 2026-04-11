@@ -16,7 +16,14 @@ from functools import wraps
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+
+# Allow requests from the frontend — reads FRONTEND_URL env var set on Render
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://flashlearn-frontend.onrender.com")
+CORS(app,
+     supports_credentials=True,
+     origins=[FRONTEND_URL, "http://localhost:3000"],
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
