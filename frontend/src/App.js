@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+// In production (Render), REACT_APP_API_URL is set to the backend service URL.
+// Locally it falls back to the proxy in package.json (empty string = relative path).
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || '';
 import AuthScreen from './components/AuthScreen';
 import UploadScreen from './components/UploadScreen';
 import LoadingScreen from './components/LoadingScreen';
