@@ -1,8 +1,9 @@
 import React from 'react';
 
-export default function ModeScreen({ deck1Done, hasLeftSwiped, onCurated, onRevision, onHome, onDashboard, leftSwipedCount, totalCards }) {
+export default function ModeScreen({ deck1Done, hasLeftSwiped, onCurated, onRevision, onHome, onDashboard, leftSwipedCount, totalCards, pdfName }) {
   const revEnabled = deck1Done && hasLeftSwiped;
   const knownCount = totalCards - leftSwipedCount;
+  const displayName = pdfName ? pdfName.replace(/\.pdf$/i, '') : null;
 
   return (
     <div className="screen mode-screen">
@@ -13,11 +14,22 @@ export default function ModeScreen({ deck1Done, hasLeftSwiped, onCurated, onRevi
         </div>
         <div className="top-nav-right">
           <button className="nav-pill" onClick={onDashboard}>📊 Progress</button>
-          <button className="nav-pill outline" onClick={onHome}>⬅ Upload New</button>
+          <button className="nav-pill outline" onClick={onHome}>🏠 Home</button>
         </div>
       </div>
       <div className="mode-content">
         <div className="mode-header">
+          {displayName && (
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              background: 'rgba(255,255,255,.72)', border: '1.5px solid rgba(107,95,181,.20)',
+              borderRadius: 20, padding: '6px 18px', marginBottom: 16,
+              fontSize: 14, fontWeight: 600, color: 'var(--ink2)',
+              backdropFilter: 'blur(8px)'
+            }}>
+              📄 {displayName}
+            </div>
+          )}
           <h2 className="mode-title">What would you like to do?</h2>
           {deck1Done && (
             <div className="mode-score-banner">

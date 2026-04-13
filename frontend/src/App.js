@@ -37,6 +37,7 @@ export default function App() {
   const [error, setError] = useState('');
   const [sessionId, setSessionId] = useState(null);
   const [selectedSessionId, setSelectedSessionId] = useState(null);
+  const [pdfName, setPdfName] = useState('');
 
   useEffect(() => {
     if (token) {
@@ -71,11 +72,12 @@ export default function App() {
     localStorage.removeItem('fl_token');
     setUser(null);
     setScreen(SCREENS.AUTH);
-    setCards([]); setLeftSwiped([]); setDeck1Done(false); setRevNotes([]); setSessionId(null);
+    setCards([]); setLeftSwiped([]); setDeck1Done(false); setRevNotes([]); setSessionId(null); setPdfName('');
   };
 
   const handleGenerate = async (file, complexity) => {
     setError('');
+    setPdfName(file.name);
     setScreen(SCREENS.LOADING);
     const formData = new FormData();
     formData.append('pdf', file);
@@ -141,16 +143,17 @@ export default function App() {
           onCurated={() => setScreen(SCREENS.CARDS)} onRevision={handleStartRevision}
           onHome={() => setScreen(SCREENS.UPLOAD)} onDashboard={() => setScreen(SCREENS.DASHBOARD)}
           leftSwipedCount={leftSwiped.length} totalCards={cards.length}
+          pdfName={pdfName}
         />
       )}
       {screen === SCREENS.CARDS && (
-        <CardScreen cards={cards} onBack={() => setScreen(SCREENS.MODE)} onDone={handleDeck1Done} />
+        <CardScreen cards={cards} onBack={() => setScreen(SCREENS.MODE)} onDone={handleDeck1Done} pdfName={pdfName} onHome={() => setScreen(SCREENS.UPLOAD)} />
       )}
       {screen === SCREENS.REV_LOADING && (
         <LoadingScreen message="Generating your revision notes..." sub="Personalizing based on cards you struggled with..." />
       )}
       {screen === SCREENS.REVISION && (
-        <RevisionScreen notes={revNotes} onBack={() => setScreen(SCREENS.MODE)} />
+        <RevisionScreen notes={revNotes} onBack={() => setScreen(SCREENS.MODE)} pdfName={pdfName} onHome={() => setScreen(SCREENS.UPLOAD)} />
       )}
       {screen === SCREENS.DASHBOARD && (
         <DashboardScreen onBack={() => setScreen(SCREENS.UPLOAD)} onViewSession={handleViewSession} user={user} onLogout={handleLogout} />

@@ -1,16 +1,29 @@
 import React, { useState } from 'react';
 
-export default function RevisionScreen({ notes, onBack }) {
+export default function RevisionScreen({ notes, onBack, pdfName, onHome }) {
   const [idx, setIdx] = useState(0);
   const note = notes[idx];
   const isLast = idx === notes.length - 1;
   const progress = ((idx + 1) / notes.length) * 100;
 
+  const displayName = pdfName ? pdfName.replace(/\.pdf$/i, '') : null;
+
   return (
     <div className="screen card-screen">
       <div className="top-nav">
         <div className="top-nav-brand"><span className="top-nav-logo">FL</span><span className="top-nav-name">FlashLearn</span></div>
-        <button className="nav-pill outline" onClick={onBack}>⬅ Back</button>
+        <div className="top-nav-right">
+          {displayName && (
+            <span style={{
+              fontSize: 13, fontWeight: 600, color: 'var(--ink2)',
+              background: 'rgba(217,124,26,.10)', border: '1.5px solid rgba(217,124,26,.30)',
+              borderRadius: 20, padding: '5px 14px', maxWidth: 200,
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'
+            }}>📄 {displayName}</span>
+          )}
+          <button className="nav-pill" onClick={onHome} style={{ marginLeft: 8 }}>🏠 Home</button>
+          <button className="nav-pill outline" onClick={onBack}>⬅ Back</button>
+        </div>
       </div>
       <div className="card-screen-content">
         <div className="card-progress-area">
