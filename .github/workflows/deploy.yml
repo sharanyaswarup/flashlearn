@@ -111,43 +111,17 @@ jobs:
   # JOB 3: Deploy to VPS/Server (main only)
   # ─────────────────────────────────────────────
   deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      deploy:
+       name: Deploy to Render
+       runs-on: ubuntu-latest
+       needs: build-and-push
+       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+       steps:
+       - name: Trigger Render backend deploy
+         run: |
+         curl -s "${{ secrets.https://api.render.com/deploy/srv-d7cteut8nd3s73ates30?key=KjqThSGjWU0 }}"
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            set -e
-            cd /opt/flashlearn
-
-            # Pull latest docker-compose file
-            git pull origin main
-
-            # Log in to GHCR on the server
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-            # Pull new images
-            docker pull ghcr.io/${{ github.repository }}-frontend:latest
-            docker pull ghcr.io/${{ github.repository }}-backend:latest
-
-            # Write env vars (injected from GitHub Secrets)
-            cat > .env <<EOF
-            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            EOF
-
-            # Rolling restart — zero-ish downtime
-            docker compose up -d --no-deps --remove-orphans frontend backend
-
-            # Clean up old images
-            docker image prune -f
+       - name: Trigger Render frontend deploy
+         run: |
+         curl -s "${{ secrets.https://api.render.com/deploy/srv-d7csq91o3t8c73960log?key=JWviOM4TGWY }}"
